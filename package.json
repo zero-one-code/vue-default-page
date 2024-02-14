@@ -1,0 +1,97 @@
+{
+  "name": "vue-default-page",
+  "version": "0.0.1-beta.1",
+  "description": "A Vue 3.0 custom directives plugin",
+  "keywords": [
+    "vue",
+    "directives",
+    "v-loading",
+    "request"
+  ],
+  "author": "Zerone",
+  "license": "MIT",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "types": "dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "style": "dist/style.css",
+  "scripts": {
+    "dev": "vite",
+    "build": "run-p type-check \"build-only {@}\" --",
+    "preview": "vite preview",
+    "test:unit": "vitest",
+    "test:e2e": "start-server-and-test preview http://localhost:4173 'cypress run --e2e'",
+    "test:e2e:dev": "start-server-and-test 'vite dev --port 4173' http://localhost:4173 'cypress open --e2e'",
+    "build-only": "vite build",
+    "type-check": "vue-tsc --build --force",
+    "lint": "eslint \"**/*.{js,ts,jsx,tsx,vue}\" --fix",
+    "format": "prettier \"**/*.{js,ts,jsx,tsx,vue,css,less}\" --write",
+    "lint:css": "stylelint \"**/*.{vue,css,less}\" --fix",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{js,ts,jsx,tsx}": [
+      "eslint",
+      "prettier --check"
+    ],
+    "*.vue": [
+      "eslint",
+      "prettier --check",
+      "stylelint"
+    ],
+    "*.{css,less}": [
+      "prettier --check",
+      "stylelint"
+    ]
+  },
+  "peerDependencies": {
+    "vue": "^3.3.0"
+  },
+  "dependencies": {
+    "lodash": "^4.17.21"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^18.6.1",
+    "@commitlint/config-conventional": "^18.6.2",
+    "@rushstack/eslint-patch": "^1.3.3",
+    "@tsconfig/node18": "^18.2.2",
+    "@types/jsdom": "^21.1.6",
+    "@types/lodash": "^4.14.202",
+    "@types/node": "^18.19.3",
+    "@vitejs/plugin-vue": "^4.5.2",
+    "@vitejs/plugin-vue-jsx": "^3.1.0",
+    "@vue/eslint-config-prettier": "^8.0.0",
+    "@vue/eslint-config-typescript": "^12.0.0",
+    "@vue/test-utils": "^2.4.3",
+    "@vue/tsconfig": "^0.5.0",
+    "autoprefixer": "^10.4.17",
+    "cypress": "^13.6.1",
+    "eslint": "^8.56.0",
+    "eslint-plugin-cypress": "^2.15.1",
+    "eslint-plugin-vue": "^9.17.0",
+    "husky": "^9.0.10",
+    "jsdom": "^23.0.1",
+    "less": "^4.2.0",
+    "lint-staged": "^15.2.2",
+    "npm-run-all2": "^6.1.1",
+    "postcss-html": "^1.6.0",
+    "prettier": "^3.0.3",
+    "start-server-and-test": "^2.0.3",
+    "stylelint": "^16.2.1",
+    "stylelint-config-recommended-vue": "^1.5.0",
+    "stylelint-config-standard-less": "^3.0.1",
+    "typescript": "~5.3.0",
+    "vite": "^5.0.10",
+    "vitest": "^1.0.4",
+    "vue-tsc": "^1.8.25"
+  }
+}
