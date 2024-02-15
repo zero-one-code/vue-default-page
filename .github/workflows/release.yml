@@ -24,10 +24,13 @@ jobs:
         with:
           node-version: 16
           registry-url: 'https://registry.npmjs.org'
+        if: ${{ steps.release.outputs.release_created }}
       - uses: pnpm/action-setup@v3
         with:
           version: 8
+        if: ${{ steps.release.outputs.release_created }}
       - run: pnpm i
+        if: ${{ steps.release.outputs.release_created }}
       - run: pnpm build
         if: ${{ steps.release.outputs.release_created }}
       - run: npm publish
