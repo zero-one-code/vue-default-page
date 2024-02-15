@@ -29,7 +29,8 @@
     ".": {
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
-    }
+    },
+    "./index.css": "./dist/style.css"
   },
   "style": "dist/style.css",
   "scripts": {
