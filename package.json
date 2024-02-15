@@ -1,6 +1,6 @@
 {
   "name": "vue-default-page",
-  "version": "0.0.1-beta.1",
+  "version": "1.0.0",
   "description": "A Vue 3.0 custom directives plugin",
   "keywords": [
     "vue",
