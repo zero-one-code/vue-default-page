@@ -6,10 +6,14 @@
     "vue",
     "directives",
     "v-loading",
-    "request"
+    "requests"
   ],
   "author": "Zerone",
   "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zero-one-code/vue-default-page/issues"
+  },
+  "homepage": "https://github.com/zero-one-code/vue-default-page#readme",
   "type": "module",
   "files": [
     "dist"

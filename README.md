@@ -1,3 +1,5 @@
+English | [中文](./README.zh-CN.md)
+
 # Vue-Default-Page
 
 A Vue 3.0 custom directives plugin, with built-in directives such as `v-loading`, `v-skeleton`, `v-skeleton-avatar`, `v-skeleton-list`, `v-error`, and `v-empty`, dedicated to addressing issues related to waiting, feedback, and error during network requests.
@@ -494,4 +496,4 @@ Thank [element-plus](https://github.com/element-plus/element-plus) for providing
 
 ## LICENSE
 
-[MIT]().
+[MIT](./LICENSE).
