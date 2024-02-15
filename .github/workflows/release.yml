@@ -2,11 +2,7 @@ on:
   push:
     branches:
       - dev
-permissions:
-  actions: write
-  packages: write
-  contents: write
-  pull-requests: write
+permissions: write-all
 name: release-please
 jobs:
   release-please:
