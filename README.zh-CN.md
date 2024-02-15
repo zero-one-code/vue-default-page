@@ -44,7 +44,7 @@ npm i vue-default-page
 // 引入指令
 import vueDefaultPage from 'vue-default-page';
 // 引入样式
-import 'vue-default-page/style.css';
+import 'vue-default-page/index.css';
 
 import { createApp } from 'vue';
 

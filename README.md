@@ -46,7 +46,7 @@ npm i vue-default-page
 // Import the directives
 import vueDefaultPage from 'vue-default-page';
 // Import the style
-import 'vue-default-page/style.css';
+import 'vue-default-page/index.css';
 
 import { createApp } from 'vue';
 
