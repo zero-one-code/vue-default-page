@@ -4,6 +4,7 @@ on:
       - dev
 permissions:
   actions: write
+  packages: write
 name: release-please
 jobs:
   release-please:
