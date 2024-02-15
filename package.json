@@ -1,6 +1,6 @@
 {
   "name": "vue-default-page",
-  "version": "0.0.1-beta.1",
+  "version": "0.1.2",
   "description": "A Vue 3.0 custom directives plugin",
   "keywords": [
     "vue",
@@ -14,6 +14,10 @@
     "url": "https://github.com/zero-one-code/vue-default-page/issues"
   },
   "homepage": "https://github.com/zero-one-code/vue-default-page#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zero-one-code/vue-default-page.git"
+  },
   "type": "module",
   "files": [
     "dist"
@@ -25,7 +29,8 @@
     ".": {
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
-    }
+    },
+    "./index.css": "./dist/style.css"
   },
   "style": "dist/style.css",
   "scripts": {
