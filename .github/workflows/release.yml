@@ -22,7 +22,7 @@ jobs:
       - uses: pnpm/action-setup@v3
         with:
           version: 8
-      - run: pnpm ci
+      - run: pnpm i
       - run: pnpm build
       - uses: JS-DevTools/npm-publish@v3
         with:
