@@ -1,7 +1,7 @@
 on:
   push:
-    branches:
-      - dev
+    tags:
+      - 'v*'
 permissions:
   contents: write
   pull-requests: write
@@ -15,15 +15,15 @@ jobs:
         with:
           release-type: node
       - uses: actions/checkout@v4
-        if: ${{ steps.release.outputs.release_created }}
       - uses: actions/setup-node@v4
         with:
-          node-version: 12
+          node-version: 16
           registry-url: 'https://registry.npmjs.org'
-        if: ${{ steps.release.outputs.release_created }}
-      - run: npm ci
-        if: ${{ steps.release.outputs.release_created }}
-      - run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        if: ${{ steps.release.outputs.release_created }}
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 8
+      - run: pnpm ci
+      - run: pnpm build
+      - uses: JS-DevTools/npm-publish@v3
+        with:
+          token: ${{ secrets.NPM_TOKEN }}
