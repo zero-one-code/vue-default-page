@@ -3,8 +3,7 @@ on:
     branches:
       - dev
 permissions:
-  contents: write
-  pull-requests: write
+  actions: write
 name: release-please
 jobs:
   release-please:
