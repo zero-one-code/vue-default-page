@@ -282,7 +282,7 @@ app.use(vueDefaultPage, {
 | miniIcon      | 自定义小图标                     | boolean / string | true     |
 | iconMaxSize   | 图标最大尺寸                     | number / string  | 24       |
 | iconShowText  | 大图标时是否显示文案             | boolean          | true     |
-| zIndex        | 指令的层叠顺序                   | number /string   | 100      |
+| zIndex        | 指令的层叠顺序                   | number / string  | 100      |
 | background    | 背景遮罩的颜色                   | string           | #fff     |
 
 ### 属性配置项
@@ -338,7 +338,7 @@ app.use(vueDefaultPage, {
 | enable        | 是否使用指令   | boolean                                      | true   |
 | animation     | 动画           | boolean / ('avatar' ｜ 'list')[] / Animation | true   |
 | avatarMaxSize | 头像最大尺寸   | number / string                              | 54     |
-| zIndex        | 指令的层叠顺序 | number /string                               | 100    |
+| zIndex        | 指令的层叠顺序 | number / string                              | 100    |
 | background    | 背景遮罩的颜色 | string                                       | #fff   |
 
 ### 属性配置项
@@ -401,21 +401,21 @@ app.use(vueDefaultPage, {
 | textColor    | 文案颜色                       | string           | #999               |
 | icon         | 自定义图标                     | string           | —                  |
 | miniIcon     | 自定义小图标                   | boolean / string | true               |
-| iconMaxSize  | 图标最大尺寸                   | number /string   | 180                |
+| iconMaxSize  | 图标最大尺寸                   | number / string  | 180                |
 | iconShowText | 大图标时是否显示文案           | boolean          | true               |
-| zIndex       | 指令的层叠顺序                 | number /string   | 100                |
+| zIndex       | 指令的层叠顺序                 | number / string  | 100                |
 | background   | 背景遮罩的颜色                 | string           | #fff               |
 
 ### 属性配置项
 
-| 名称                    | 说明                           | 类型             | 默认值             |
-| ----------------------- | ------------------------------ | ---------------- | ------------------ |
-| vdp-error-text          | 文案                           | string           | Network Error      |
-| vdp-error-refresh-text  | 刷新文案（传入刷新函数时生效） | boolean / string | , Click to Refresh |
-| vdp-error-text-color    | 文案颜色                       | string           | #999               |
-| vdp-error-icon          | 自定义图标                     | string           | —                  |
-| vdp-error-mini-icon     | 自定义小图标                   | string           | —                  |
-| vdp-error-icon-max-size | 图标最大尺寸                   | string           | 180                |
+| 名称                    | 说明                           | 类型   | 默认值             |
+| ----------------------- | ------------------------------ | ------ | ------------------ |
+| vdp-error-text          | 文案                           | string | Network Error      |
+| vdp-error-refresh-text  | 刷新文案（传入刷新函数时生效） | string | , Click to Refresh |
+| vdp-error-text-color    | 文案颜色                       | string | #999               |
+| vdp-error-icon          | 自定义图标                     | string | —                  |
+| vdp-error-mini-icon     | 自定义小图标                   | string | —                  |
+| vdp-error-icon-max-size | 图标最大尺寸                   | string | 180                |
 
 ## v-empty
 
@@ -453,9 +453,9 @@ app.use(vueDefaultPage, {
 | textColor    | 文案颜色             | string           | #999    |
 | icon         | 自定义图标           | string           | —       |
 | miniIcon     | 自定义小图标         | boolean / string | true    |
-| iconMaxSize  | 图标最大尺寸         | number /string   | 180     |
+| iconMaxSize  | 图标最大尺寸         | number / string  | 180     |
 | iconShowText | 大图标时是否显示文案 | boolean          | true    |
-| zIndex       | 指令的层叠顺序       | number /string   | 100     |
+| zIndex       | 指令的层叠顺序       | number / string  | 100     |
 | background   | 背景遮罩的颜色       | string           | #fff    |
 
 ### 属性配置项

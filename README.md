@@ -284,7 +284,7 @@ Custom icon, same option as [v-error](#v-error) and [v-empty](#v-empty).
 | miniIcon      | custom mini icon                                | boolean / string | true     |
 | iconMaxSize   | maximum size of icon                            | number / string  | 24       |
 | iconShowText  | whether to show text when using large icon      | boolean          | true     |
-| zIndex        | the stack level of the directive                | number /string   | 100      |
+| zIndex        | the stack level of the directive                | number / string  | 100      |
 | background    | background color of the mask                    | string           | #fff     |
 
 ### Attribute Options
@@ -403,21 +403,21 @@ You can also pass a refresh function in an array. For detailed usage, refer to [
 | textColor    | text color                                            | string           | #999               |
 | icon         | custom icon                                           | string           | —                  |
 | miniIcon     | custom mini icon                                      | boolean / string | true               |
-| iconMaxSize  | maximum size of icon                                  | number /string   | 180                |
+| iconMaxSize  | maximum size of icon                                  | number / string  | 180                |
 | iconShowText | whether to show text when using large icon            | boolean          | true               |
-| zIndex       | the stack level of the directive                      | number /string   | 100                |
+| zIndex       | the stack level of the directive                      | number / string  | 100                |
 | background   | background color of the mask                          | string           | #fff               |
 
 ### Attribute Options
 
-| Name                    | Description                                           | Type             | Default            |
-| ----------------------- | ----------------------------------------------------- | ---------------- | ------------------ |
-| vdp-error-text          | text                                                  | string           | Network Error      |
-| vdp-error-refresh-text  | refresh text (enable when refresh function is passed) | boolean / string | , Click to Refresh |
-| vdp-error-text-color    | text color                                            | string           | #999               |
-| vdp-error-icon          | custom icon                                           | string           | —                  |
-| vdp-error-mini-icon     | custom mini icon                                      | string           | —                  |
-| vdp-error-icon-max-size | maximum size of icon                                  | string           | 180                |
+| Name                    | Description                                           | Type   | Default            |
+| ----------------------- | ----------------------------------------------------- | ------ | ------------------ |
+| vdp-error-text          | text                                                  | string | Network Error      |
+| vdp-error-refresh-text  | refresh text (enable when refresh function is passed) | string | , Click to Refresh |
+| vdp-error-text-color    | text color                                            | string | #999               |
+| vdp-error-icon          | custom icon                                           | string | —                  |
+| vdp-error-mini-icon     | custom mini icon                                      | string | —                  |
+| vdp-error-icon-max-size | maximum size of icon                                  | string | 180                |
 
 ## v-empty
 
@@ -455,9 +455,9 @@ The maximum icon size can be adjusted using the `iconMaxSize` or the `vdp-empty-
 | textColor    | text color                            | string           | #999    |
 | icon         | custom icon                           | string           | —       |
 | miniIcon     | custom mini icon                      | boolean / string | true    |
-| iconMaxSize  | maximum size of icon                  | number /string   | 180     |
+| iconMaxSize  | maximum size of icon                  | number / string  | 180     |
 | iconShowText | whether to show text when using large | boolean          | true    |
-| zIndex       | the stack level of the directive      | number /string   | 100     |
+| zIndex       | the stack level of the directive      | number / string  | 100     |
 | background   | background color of the mask          | string           | #fff    |
 
 ### Attribute Options
