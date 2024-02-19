@@ -4,6 +4,8 @@ English | [中文](./README.zh-CN.md)
 
 A Vue 3.0 custom directives plugin, with built-in directives such as `v-loading`, `v-skeleton`, `v-skeleton-avatar`, `v-skeleton-list`, `v-error`, and `v-empty`, dedicated to addressing issues related to waiting, feedback, and error during network requests.
 
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/edit/vue-default-page?file=src%2FApp.vue)
+
 ## Table of Contents
 
 - [Installation](#installation)
@@ -340,7 +342,7 @@ app.use(vueDefaultPage, {
 | enable        | enable the directive             | boolean                                      | true    |
 | animation     | animation                        | boolean / ('avatar' ｜ 'list')[] / Animation | true    |
 | avatarMaxSize | maximum size of avatar           | number / string                              | 54      |
-| zIndex        | the stack level of the directive | number /string                               | 100     |
+| zIndex        | the stack level of the directive | number / string                              | 100     |
 | background    | background color of the mask     | string                                       | #fff    |
 
 ### Attribute Options
