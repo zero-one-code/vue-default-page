@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/zero-one-code/vue-default-page/compare/v1.0.0...v1.0.1) (2024-02-20)
+
+
+### Bug Fixes
+
+* export types ([9c8107c](https://github.com/zero-one-code/vue-default-page/commit/9c8107c80300661bb822a00f26d58db02c4ea252))
+
 ## 1.0.0 (2024-02-15)
 
 
