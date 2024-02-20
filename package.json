@@ -25,14 +25,15 @@
   "main": "dist/index.cjs",
   "module": "dist/index.js",
   "types": "dist/types/index.d.ts",
+  "style": "dist/style.css",
   "exports": {
     ".": {
       "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
+      "require": "./dist/index.cjs",
+      "types": "./dist/types/index.d.ts"
     },
     "./index.css": "./dist/style.css"
   },
-  "style": "dist/style.css",
   "scripts": {
     "dev": "vite",
     "build": "run-p type-check \"build-only {@}\" --",
