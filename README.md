@@ -103,6 +103,8 @@ Import to the component.
 <!-- demo.vue -->
 
 <script setup lang="js">
+  import { ref } from 'vue';
+
   const useRun = (api) => {
     const loading = ref(false);
     const error = ref(false);
@@ -123,12 +125,14 @@ Import to the component.
   };
 
   const data = ref([]);
-  const api = () => {
-    // Simulate a request, usually return a Promise
-    return setTimeout(() => {
-      data.value = Array.from({ length: 10 }, (v, k) => k);
-    }, 1000);
-  };
+  // Simulate a request
+  const api = () =>
+    new Promise((resolve, reject) => {
+      setTimeout(() => {
+        data.value = Array.from({ length: 10 }, (v, k) => k);
+        resolve();
+      }, 2000);
+    });
 
   const [loading, error, init] = useRun(api);
 
@@ -429,7 +433,7 @@ All directives will automatically adjust their height according to the container
 <!-- demo.vue -->
 
 <template>
-  <div v-empty="true" style="{height: 1000px;}"></div>
+  <div v-empty="true" style="height: 500px;"></div>
   <div v-empty="true"></div>
 </template>
 ```
@@ -442,8 +446,8 @@ The maximum icon size can be adjusted using the `iconMaxSize` or the `vdp-empty-
 <template>
   <div
     v-empty="true"
-    style="{height: 1000px;}"
-    vdp-empty-icon-max-size="500"
+    style="height: 500px;"
+    vdp-empty-icon-max-size="400"
   ></div>
 </template>
 ```

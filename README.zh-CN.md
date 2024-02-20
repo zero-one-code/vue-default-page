@@ -101,6 +101,8 @@ app.use(vdpLoading);
 <!-- demo.vue -->
 
 <script setup lang="js">
+  import { ref } from 'vue';
+
   const useRun = (api) => {
     const loading = ref(false);
     const error = ref(false);
@@ -121,12 +123,14 @@ app.use(vdpLoading);
   };
 
   const data = ref([]);
-  const api = () => {
-    // 模拟请求，一般是返回 Promise 对象
-    return setTimeout(() => {
-      data.value = Array.from({ length: 10 }, (v, k) => k);
-    }, 1000);
-  };
+  // 模拟请求
+  const api = () =>
+    new Promise((resolve, reject) => {
+      setTimeout(() => {
+        data.value = Array.from({ length: 10 }, (v, k) => k);
+        resolve();
+      }, 2000);
+    });
 
   const [loading, error, init] = useRun(api);
 
@@ -427,7 +431,7 @@ app.use(vueDefaultPage, {
 <!-- demo.vue -->
 
 <template>
-  <div v-empty="true" style="{height: 1000px;}"></div>
+  <div v-empty="true" style="height: 500px;"></div>
   <div v-empty="true"></div>
 </template>
 ```
@@ -440,8 +444,8 @@ app.use(vueDefaultPage, {
 <template>
   <div
     v-empty="true"
-    style="{height: 1000px;}"
-    vdp-empty-icon-max-size="500"
+    style="height: 500px;"
+    vdp-empty-icon-max-size="400"
   ></div>
 </template>
 ```
