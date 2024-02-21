@@ -2,9 +2,10 @@ English | [中文](./README.zh-CN.md)
 
 # Vue-Default-Page
 
-A Vue 3.0 custom directives plugin, with built-in directives such as `v-loading`, `v-skeleton`, `v-skeleton-avatar`, `v-skeleton-list`, `v-error`, and `v-empty`, dedicated to addressing issues related to waiting, feedback, and error during network requests.
+[![NPM Version](https://img.shields.io/npm/v/vue-default-page)](https://www.npmjs.com/package/vue-default-page)
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz_small.svg)](https://stackblitz.com/edit/vue-default-page?file=src%2FApp.vue)
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/edit/vue-default-page?file=src%2FApp.vue)
+A Vue 3.0 plugin with built-in `v-loading`, `v-skeleton`, `v-skeleton-avatar`, `v-skeleton-list`, `v-error` and `v-empty` custom directives, focused on solving network request waiting, feedback and error scenarios.
 
 ## Table of Contents
 

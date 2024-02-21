@@ -1,8 +1,9 @@
 # Vue-Default-Page
 
-一个 Vue 3.0 自定义指令包插件，内置 `v-loading`，`v-skeleton`，`v-skeleton-avatar`，`v-skeleton-list`，`v-error`，`v-empty` 等指令，专注解决网络请求时等待、回显和报错等场景。
+[![NPM Version](https://img.shields.io/npm/v/vue-default-page)](https://www.npmjs.com/package/vue-default-page)
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz_small.svg)](https://stackblitz.com/edit/vue-default-page?file=src%2FApp.vue)
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/edit/vue-default-page?file=src%2FApp.vue)
+一个 Vue 3.0 自定义指令包插件，内置 `v-loading`，`v-skeleton`，`v-skeleton-avatar`，`v-skeleton-list`，`v-error`，`v-empty` 等指令，专注解决网络请求时等待、回显和报错等场景。
 
 ## 目录
 
