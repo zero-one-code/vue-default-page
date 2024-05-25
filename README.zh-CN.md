@@ -3,31 +3,34 @@
 [![NPM Version](https://img.shields.io/npm/v/vue-default-page)](https://www.npmjs.com/package/vue-default-page)
 [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz_small.svg)](https://stackblitz.com/edit/vue-default-page?file=src%2FApp.vue)
 
-一个 Vue 3.0 自定义指令包插件，内置 `v-loading`，`v-skeleton`，`v-skeleton-avatar`，`v-skeleton-list`，`v-error`，`v-empty` 等指令，专注解决网络请求时等待、回显和报错等场景。
+一个 Vue 3.0 自定义指令包插件，内置 `v-loading`，`v-skeleton`，`v-skeleton-avatar`，`v-skeleton-list`，`v-error`，`v-empty` 等缺省页指令，专注解决网络请求时等待、回显和报错等场景。
 
 ## 目录
 
 - [安装](#安装)
 - [快速上手](#快速上手)
+  - [完整引入](#完整引入)
+  - [全局配置](#全局配置)
+  - [按需引入](#按需引入)
+  - [按需引入全局配置](#按需引入全局配置)
+  - [局部引入](#局部引入)
+  - [局部引入配置](#局部引入配置)
   - [进阶](#进阶)
   - [显示优先级](#显示优先级)
-- [自定义配置](#自定义配置)
-  - [通用配置项](#通用配置项)
-  - [属性通用配置项](#属性通用配置项)
 - [v-loading](#v-loading)
-  - [配置项](#配置项)
+  - [VdpLoading 配置项](#vdploading-配置项)
   - [属性配置项](#属性配置项)
 - [v-skeleton](#v-skeleton)
-  - [配置项](#配置项-1)
+  - [VdpSkeleton 配置项](#vdpskeleton-配置项)
   - [属性配置项](#属性配置项-1)
   - [Animation](#animation)
-  - [v-skeleton-avatar 配置项](#v-skeleton-avatar-配置项)
-  - [v-skeleton-list 配置项](#v-skeleton-list-配置项)
+  - [VdpSkeletonAvatar 配置项](#vdpskeletonavatar-配置项)
+  - [VdpSkeletonList 配置项](#vdpskeletonlist-配置项)
 - [v-error](#v-error)
-  - [配置项](#配置项-2)
+  - [VdpError 配置项](#vdperror-配置项)
   - [属性配置项](#属性配置项-2)
 - [v-empty](#v-empty)
-  - [配置项](#配置项-3)
+  - [VdpEmpty 配置项](#vdpempty-配置项)
   - [属性配置项](#属性配置项-3)
 - [兼容移动端](#兼容移动端)
 - [鸣谢](#鸣谢)
@@ -40,6 +43,8 @@ npm i vue-default-page
 ```
 
 ## 快速上手
+
+### 完整引入
 
 ```js
 // main.js
@@ -63,95 +68,7 @@ app.use(vueDefaultPage);
 <div v-loading="true"></div>
 ```
 
-单独使用某个指令。
-
-```js
-// main.js
-
-// 引入指令
-import { vdpLoading } from 'vue-default-page';
-
-import { createApp } from 'vue';
-
-const app = createApp();
-
-// 注册指令
-app.use(vdpLoading);
-```
-
-直接在组件中引入。
-
-```vue
-<!-- demo.vue -->
-
-<script setup lang="js">
-  // 引入指令
-  import { createVueDefaultPage } from 'vue-default-page';
-  // 创建指令
-  const vLoading = createVueDefaultPage('loading');
-</script>
-
-<template>
-  <div v-loading="true"></div>
-</template>
-```
-
-### 进阶
-
-```vue
-<!-- demo.vue -->
-
-<script setup lang="js">
-  import { ref } from 'vue';
-
-  const useRun = (api) => {
-    const loading = ref(false);
-    const error = ref(false);
-    const formatApi = async (...args) => {
-      error.value = false;
-      loading.value = true;
-      try {
-        const ret = await api(...args);
-        return ret;
-      } catch (e) {
-        error.value = true;
-        throw e;
-      } finally {
-        loading.value = false;
-      }
-    };
-    return [loading, error, formatApi];
-  };
-
-  const data = ref([]);
-  // 模拟请求
-  const api = () =>
-    new Promise((resolve, reject) => {
-      setTimeout(() => {
-        data.value = Array.from({ length: 10 }, (v, k) => k);
-        resolve();
-      }, 2000);
-    });
-
-  const [loading, error, init] = useRun(api);
-
-  init();
-</script>
-
-<template>
-  <div v-loading="loading" v-error="[error, init]" v-empty="!data.length">
-    <div v-for="i in data" :key="i">{{ i }}</div>
-  </div>
-</template>
-```
-
-### 显示优先级
-
-指令均为 true 时会按以下优先级显示。
-
-`v-loading` > `v-skeleton` = `v-skeleton-avatar` = `v-skeleton-list` > `v-error` > `v-empty`
-
-## 自定义配置
+### 全局配置
 
 ```js
 // main.js
@@ -166,7 +83,36 @@ app.use(vueDefaultPage, {
 });
 ```
 
-单独使用某个指令时添加配置。
+| 名称           | 说明                       | 类型                                                     | 默认值 |
+| -------------- | -------------------------- | -------------------------------------------------------- | ------ |
+| zIndex         | 指令的层叠顺序             | number / string                                          | 100    |
+| background     | 背景遮罩的颜色             | string                                                   | #fff   |
+| loading        | v-loading 指令配置         | boolean / [VdpLoading](#vdploading-配置项)               | true   |
+| skeleton       | v-skeleton 指令配置        | boolean / [VdpSkeleton](#vdpskeleton-配置项)             | true   |
+| skeletonAvatar | v-skeleton-avatar 指令配置 | boolean / [VdpSkeletonAvatar](#vdpskeletonavatar-配置项) | false  |
+| skeletonList   | v-skeleton-list 指令配置   | boolean / [VdpSkeletonList](#vdpskeletonlist-配置项)     | false  |
+| error          | v-error 指令配置           | boolean / [VdpError](#vdperror-配置项)                   | true   |
+| empty          | v-empty 指令配置           | boolean / [VdpEmpty](#vdpempty-配置项)                   | true   |
+
+### 按需引入
+
+```js
+// main.js
+
+// 引入指令
+import { vdpLoading } from 'vue-default-page';
+// 引入样式
+import 'vue-default-page/index.css';
+
+import { createApp } from 'vue';
+
+const app = createApp();
+
+// 注册指令
+app.use(vdpLoading);
+```
+
+### 按需引入全局配置
 
 ```js
 // main.js
@@ -179,12 +125,43 @@ app.use(vdpLoading, {
 });
 ```
 
-在组件中引入时添加配置。
+| 名称              | 说明                   | 配置项类型                                     |
+| ----------------- | ---------------------- | ---------------------------------------------- |
+| vdpLoading        | v-loading 指令         | [VdpLoading](#vdploading-配置项)               |
+| vdpSkeleton       | v-skeleton 指令        | [VdpSkeleton](#vdpskeleton-配置项)             |
+| vdpSkeletonAvatar | v-skeleton-avatar 指令 | [VdpSkeletonAvatar](#vdpskeletonavatar-配置项) |
+| vdpSkeletonList   | v-skeleton-list 指令   | [VdpSkeletonList](#vdpskeletonlist-配置项)     |
+| vdpError          | v-error 指令           | [VdpError](#vdperror-配置项)                   |
+| vdpEmpty          | v-empty 指令           | [VdpEmpty](#vdpempty-配置项)                   |
+
+### 局部引入
 
 ```vue
 <!-- demo.vue -->
 
 <script setup lang="js">
+  // 引入指令创建方法
+  import { createVueDefaultPage } from 'vue-default-page';
+  // 引入样式
+  import 'vue-default-page/index.css';
+  // 创建指令
+  const vLoading = createVueDefaultPage('loading');
+</script>
+
+<template>
+  <div v-loading="true"></div>
+</template>
+```
+
+### 局部引入配置
+
+方法一：在指令创建方法中配置，具体配置与[按需引入全局配置](#按需引入全局配置)一致。
+
+```vue
+<!-- demo.vue -->
+
+<script setup lang="js">
+  // 创建指令
   const vLoading = createVueDefaultPage('loading', {
     background: '#000',
     iconColor: '#fff',
@@ -192,9 +169,13 @@ app.use(vdpLoading, {
     textColor: '#fff',
   });
 </script>
+
+<template>
+  <div v-loading="true"></div>
+</template>
 ```
 
-通过在元素上添加属性配置。
+方法二：在元素上添加属性配置。
 
 ```vue
 <!-- demo.vue -->
@@ -210,29 +191,51 @@ app.use(vdpLoading, {
 </template>
 ```
 
-直接传布尔值关闭不想要的指令。
-
-```js
-// main.js
-
-app.use(vueDefaultPage, {
-  error: false,
-});
-```
-
-### 通用配置项
-
-| 名称       | 说明           | 类型            | 默认值 |
-| ---------- | -------------- | --------------- | ------ |
-| zIndex     | 指令的层叠顺序 | number / string | 100    |
-| background | 背景遮罩的颜色 | string          | #fff   |
-
-### 属性通用配置项
+通用属性配置项，各指令属性配置项请前往下方具体章节查看。
 
 | 名称           | 说明           | 类型   | 默认值 |
 | -------------- | -------------- | ------ | ------ |
-| vdp-z-Index    | 指令的层叠顺序 | string | 100    |
+| vdp-z-index    | 指令的层叠顺序 | string | 100    |
 | vdp-background | 背景遮罩的颜色 | string | #fff   |
+
+### 进阶
+
+```vue
+<!-- demo.vue -->
+
+<script setup lang="js">
+  import { ref } from 'vue';
+  // npm i vue-hooks-plus
+  import { useRequest } from 'vue-hooks-plus';
+
+  const data = ref([]);
+  // 模拟首次请求失败，刷新重试请求成功
+  let times = 0;
+  const api = () =>
+    new Promise((resolve, reject) => {
+      setTimeout(() => {
+        data.value = Array.from({ length: 10 }, (v, k) => k);
+        times ? resolve('请求成功') : reject('请求失败');
+        times++;
+      }, 2000);
+    });
+
+  // https://inhiblabcore.github.io/docs/hooks/useRequest
+  const { loading, error, refresh } = useRequest(api);
+</script>
+
+<template>
+  <div v-loading="loading" v-error="[!!error, refresh]" v-empty="!data.length">
+    <div v-for="i in data" :key="i">{{ i }}</div>
+  </div>
+</template>
+```
+
+### 显示优先级
+
+指令均为 true 时会按以下优先级显示。
+
+`v-loading` > `v-skeleton` = `v-skeleton-avatar` = `v-skeleton-list` > `v-error` > `v-empty`
 
 ## v-loading
 
@@ -276,21 +279,21 @@ app.use(vueDefaultPage, {
 </style>
 ```
 
-### 配置项
+### VdpLoading 配置项
 
-| 名称          | 说明                             | 类型             | 默认值   |
-| ------------- | -------------------------------- | ---------------- | -------- |
-| enable        | 是否使用指令                     | boolean          | true     |
-| text          | 文案                             | string           | Loading… |
-| textColor     | 文案颜色                         | string           | #999     |
-| iconColor     | 图标颜色（自定义图标时失效）     | string           | #bbb     |
-| miniIconColor | 小图标颜色（自定义小图标时失效） | string           | #bbb     |
-| icon          | 自定义图标                       | string           | —        |
-| miniIcon      | 自定义小图标                     | boolean / string | true     |
-| iconMaxSize   | 图标最大尺寸                     | number / string  | 24       |
-| iconShowText  | 大图标时是否显示文案             | boolean          | true     |
-| zIndex        | 指令的层叠顺序                   | number / string  | 100      |
-| background    | 背景遮罩的颜色                   | string           | #fff     |
+| 名称          | 说明                                            | 类型             | 默认值   |
+| ------------- | ----------------------------------------------- | ---------------- | -------- |
+| enable        | 是否使用指令（仅在[全局配置](#全局配置)时生效） | boolean          | true     |
+| text          | 文案                                            | string           | Loading… |
+| textColor     | 文案颜色                                        | string           | #999     |
+| iconColor     | 图标颜色（自定义图标时失效）                    | string           | #bbb     |
+| miniIconColor | 小图标颜色（自定义小图标时失效）                | string           | #bbb     |
+| icon          | 自定义图标                                      | string           | —        |
+| miniIcon      | 自定义小图标                                    | boolean / string | true     |
+| iconMaxSize   | 图标最大尺寸                                    | number / string  | 24       |
+| iconShowText  | 大图标时是否显示文案                            | boolean          | true     |
+| zIndex        | 指令的层叠顺序                                  | number / string  | 100      |
+| background    | 背景遮罩的颜色                                  | string           | #fff     |
 
 ### 属性配置项
 
@@ -306,7 +309,7 @@ app.use(vueDefaultPage, {
 
 ## v-skeleton
 
-默认显示头像和列表 skeleton， 也可以单独使用。
+默认显示头像和列表 skeleton，也可以单独使用。
 
 ```vue
 <!-- demo.vue -->
@@ -318,7 +321,30 @@ app.use(vueDefaultPage, {
 </template>
 ```
 
-可以通过定义指令的形式单独使用，与其他指令不同的是这两个指令默认是关闭的，需手动开启。
+### VdpSkeleton 配置项
+
+| 名称          | 说明                                            | 类型                                                       | 默认值 |
+| ------------- | ----------------------------------------------- | ---------------------------------------------------------- | ------ |
+| enable        | 是否使用指令（仅在[全局配置](#全局配置)时生效） | boolean                                                    | true   |
+| animation     | 动画                                            | boolean / ('avatar' ｜ 'list')[] / [Animation](#animation) | true   |
+| avatarMaxSize | 头像最大尺寸                                    | number / string                                            | 54     |
+| zIndex        | 指令的层叠顺序                                  | number / string                                            | 100    |
+| background    | 背景遮罩的颜色                                  | string                                                     | #fff   |
+
+### 属性配置项
+
+| 名称                         | 说明         | 类型   | 默认值 |
+| ---------------------------- | ------------ | ------ | ------ |
+| vdp-skeleton-avatar-max-size | 头像最大尺寸 | string | 54     |
+
+### Animation
+
+| 名称   | 说明         | 类型    | 默认值 |
+| ------ | ------------ | ------- | ------ |
+| avatar | 开启头像动画 | boolean | true   |
+| list   | 开启列表动画 | boolean | true   |
+
+头像或列表 skeleton 也可以通过定义指令的形式单独使用，但与其他指令不同的是这两个指令默认是关闭的，需手动开启。
 
 ```js
 // main.js
@@ -338,43 +364,20 @@ app.use(vueDefaultPage, {
 </template>
 ```
 
-### 配置项
+### VdpSkeletonAvatar 配置项
 
-| 名称          | 说明           | 类型                                         | 默认值 |
-| ------------- | -------------- | -------------------------------------------- | ------ |
-| enable        | 是否使用指令   | boolean                                      | true   |
-| animation     | 动画           | boolean / ('avatar' ｜ 'list')[] / Animation | true   |
-| avatarMaxSize | 头像最大尺寸   | number / string                              | 54     |
-| zIndex        | 指令的层叠顺序 | number / string                              | 100    |
-| background    | 背景遮罩的颜色 | string                                       | #fff   |
+| 名称          | 说明                                            | 类型            | 默认值 |
+| ------------- | ----------------------------------------------- | --------------- | ------ |
+| enable        | 是否使用指令（仅在[全局配置](#全局配置)时生效） | boolean         | false  |
+| animation     | 动画                                            | boolean         | true   |
+| avatarMaxSize | 头像最大尺寸                                    | number / string | 54     |
 
-### 属性配置项
+### VdpSkeletonList 配置项
 
-| 名称                         | 说明         | 类型   | 默认值 |
-| ---------------------------- | ------------ | ------ | ------ |
-| vdp-skeleton-avatar-max-size | 头像最大尺寸 | string | 54     |
-
-### Animation
-
-| 名称   | 说明     | 类型    | 默认值 |
-| ------ | -------- | ------- | ------ |
-| avatar | 显示头像 | boolean | true   |
-| list   | 显示列表 | boolean | true   |
-
-### v-skeleton-avatar 配置项
-
-| 名称          | 说明         | 类型            | 默认值 |
-| ------------- | ------------ | --------------- | ------ |
-| enable        | 是否使用指令 | boolean         | false  |
-| animation     | 动画         | boolean         | true   |
-| avatarMaxSize | 头像最大尺寸 | number / string | 54     |
-
-### v-skeleton-list 配置项
-
-| 名称      | 说明         | 类型    | 默认值 |
-| --------- | ------------ | ------- | ------ |
-| enable    | 是否使用指令 | boolean | false  |
-| animation | 动画         | boolean | true   |
+| 名称      | 说明                                            | 类型    | 默认值 |
+| --------- | ----------------------------------------------- | ------- | ------ |
+| enable    | 是否使用指令（仅在[全局配置](#全局配置)时生效） | boolean | false  |
+| animation | 动画                                            | boolean | true   |
 
 ## v-error
 
@@ -398,20 +401,20 @@ app.use(vueDefaultPage, {
 </template>
 ```
 
-### 配置项
+### VdpError 配置项
 
-| 名称         | 说明                           | 类型             | 默认值             |
-| ------------ | ------------------------------ | ---------------- | ------------------ |
-| enable       | 是否使用指令                   | boolean          | true               |
-| text         | 文案                           | string           | Network Error      |
-| refreshText  | 刷新文案（传入刷新函数时生效） | boolean / string | , Click to Refresh |
-| textColor    | 文案颜色                       | string           | #999               |
-| icon         | 自定义图标                     | string           | —                  |
-| miniIcon     | 自定义小图标                   | boolean / string | true               |
-| iconMaxSize  | 图标最大尺寸                   | number / string  | 180                |
-| iconShowText | 大图标时是否显示文案           | boolean          | true               |
-| zIndex       | 指令的层叠顺序                 | number / string  | 100                |
-| background   | 背景遮罩的颜色                 | string           | #fff               |
+| 名称         | 说明                                            | 类型             | 默认值             |
+| ------------ | ----------------------------------------------- | ---------------- | ------------------ |
+| enable       | 是否使用指令（仅在[全局配置](#全局配置)时生效） | boolean          | true               |
+| text         | 文案                                            | string           | Network Error      |
+| refreshText  | 刷新文案（传入刷新函数时生效）                  | boolean / string | , Click to Refresh |
+| textColor    | 文案颜色                                        | string           | #999               |
+| icon         | 自定义图标                                      | string           | —                  |
+| miniIcon     | 自定义小图标                                    | boolean / string | true               |
+| iconMaxSize  | 图标最大尺寸                                    | number / string  | 180                |
+| iconShowText | 大图标时是否显示文案                            | boolean          | true               |
+| zIndex       | 指令的层叠顺序                                  | number / string  | 100                |
+| background   | 背景遮罩的颜色                                  | string           | #fff               |
 
 ### 属性配置项
 
@@ -451,19 +454,19 @@ app.use(vueDefaultPage, {
 </template>
 ```
 
-### 配置项
+### VdpEmpty 配置项
 
-| 名称         | 说明                 | 类型             | 默认值  |
-| ------------ | -------------------- | ---------------- | ------- |
-| enable       | 是否使用指令         | boolean          | true    |
-| text         | 文案                 | string           | No Data |
-| textColor    | 文案颜色             | string           | #999    |
-| icon         | 自定义图标           | string           | —       |
-| miniIcon     | 自定义小图标         | boolean / string | true    |
-| iconMaxSize  | 图标最大尺寸         | number / string  | 180     |
-| iconShowText | 大图标时是否显示文案 | boolean          | true    |
-| zIndex       | 指令的层叠顺序       | number / string  | 100     |
-| background   | 背景遮罩的颜色       | string           | #fff    |
+| 名称         | 说明                                            | 类型             | 默认值  |
+| ------------ | ----------------------------------------------- | ---------------- | ------- |
+| enable       | 是否使用指令（仅在[全局配置](#全局配置)时生效） | boolean          | true    |
+| text         | 文案                                            | string           | No Data |
+| textColor    | 文案颜色                                        | string           | #999    |
+| icon         | 自定义图标                                      | string           | —       |
+| miniIcon     | 自定义小图标                                    | boolean / string | true    |
+| iconMaxSize  | 图标最大尺寸                                    | number / string  | 180     |
+| iconShowText | 大图标时是否显示文案                            | boolean          | true    |
+| zIndex       | 指令的层叠顺序                                  | number / string  | 100     |
+| background   | 背景遮罩的颜色                                  | string           | #fff    |
 
 ### 属性配置项
 
