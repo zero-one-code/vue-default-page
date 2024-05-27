@@ -15,3 +15,5 @@ export function getPrefix(string = '', chars = '-') {
     .filter((item) => item)
     .join(chars);
 }
+
+export const INSTANCE_KEY = Symbol(getPrefix());

@@ -1,3 +1,5 @@
+import { INSTANCE_KEY } from 'src/utils';
+
 import type {
   EmptyProps,
   ErrorProps,
@@ -46,3 +48,10 @@ export type DirectiveOptions<T extends Name> = (T extends 'loading'
 export type Options = {
   [N in CamelName]?: (DirectiveOptions<N> & { enable?: boolean }) | boolean;
 } & PublicOptions;
+
+export interface El extends HTMLElement {
+  [INSTANCE_KEY]?: {
+    props: Props;
+    unmount(): void;
+  };
+}

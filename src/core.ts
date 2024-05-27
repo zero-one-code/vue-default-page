@@ -10,20 +10,12 @@ import {
   toRaw,
 } from 'vue';
 import VueDefaultPage, { type Props } from './components/index.vue';
-import type { DirectiveOptions, Name, Value, CamelName } from './types';
+import type { DirectiveOptions, Name, Value, CamelName, El } from './types';
 import './style/index.less';
-import { getPrefix } from './utils';
-
-const INSTANCE_KEY = Symbol(getPrefix());
+import { getPrefix, INSTANCE_KEY } from './utils';
 
 export const publicPropsKeys = ['zIndex', 'background'] as const;
 
-interface El extends HTMLElement {
-  [INSTANCE_KEY]?: {
-    props: Props;
-    unmount(): void;
-  };
-}
 interface InstanceOptions<T extends Name> {
   name: T;
   options?: DirectiveOptions<T>;

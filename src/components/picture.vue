@@ -1,6 +1,7 @@
 <script lang="ts" setup>
   import { computed, type VNodeRef, nextTick, ref } from 'vue';
-  import { addUnit, getPrefix } from '../utils';
+  import { addUnit, getPrefix, INSTANCE_KEY } from '../utils';
+  import type { El } from '../types';
 
   export interface PictureProps {
     icon?: string;
@@ -22,12 +23,39 @@
     iconShowText: true,
   });
 
+  const isElement = (node: El) => {
+    const ELEMENT_NODE_TYPE = 1;
+    return (
+      node.tagName !== 'HTML' &&
+      node.tagName !== 'BODY' &&
+      node.nodeType === ELEMENT_NODE_TYPE
+    );
+  };
+
+  const containerPositionReg = /relative|absolute|fixed/i;
+  const getContainer = (el: El) => {
+    let node = el;
+    while (node && isElement(node)) {
+      const { position } = getComputedStyle(node);
+      if (
+        node[INSTANCE_KEY] ||
+        (containerPositionReg.test(position) && node !== el.parentNode)
+      ) {
+        return node;
+      }
+      node = node.parentNode as El;
+    }
+  };
+
   const formatShowIcon = ref(false);
   const root: VNodeRef = async (el) => {
     if (!el) return;
     await nextTick();
+    // 修复高度获取不准问题
+    const container = getContainer(el as El);
+    if (!container) return;
     formatShowIcon.value =
-      parseInt(getComputedStyle(el as Element).height, 10) > 100;
+      parseInt(getComputedStyle(container).height, 10) > 120;
   };
 
   const svgCommon = `<defs><linearGradient id="be595b27-5838-4fa8-9b74-d90d46f5bb3e" x1="80" y1="-1063.51" x2="80" y2="-1082.94" gradientTransform="matrix(1, 0, 0, -1, 0, -922.94)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e8e8e8"/><stop offset="0.6" stop-color="#f8f8f8" stop-opacity="0.5"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient></defs><path d="M152.29,160c0-5.36-32.38-19.43-72.29-19.43S7.71,154.64,7.71,160Z" fill="url(#be595b27-5838-4fa8-9b74-d90d46f5bb3e)"/>`;
