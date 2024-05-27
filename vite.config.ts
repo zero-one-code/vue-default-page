@@ -20,7 +20,7 @@ export default defineConfig({
     },
     copyPublicDir: false,
     rollupOptions: {
-      external: ['vue'],
+      external: ['vue', 'lodash'],
     },
   },
 });
