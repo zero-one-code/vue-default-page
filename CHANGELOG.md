@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2](https://github.com/zero-one-code/vue-default-page/compare/v1.0.1...v1.0.2) (2024-06-01)
+
+
+### Bug Fixes
+
+* the inaccuracy in height retrieval ([0711dc9](https://github.com/zero-one-code/vue-default-page/commit/0711dc9605fa4328f5984cf78232cbe66148cd9e))
+
 ## [1.0.1](https://github.com/zero-one-code/vue-default-page/compare/v1.0.0...v1.0.1) (2024-02-20)
 
 
