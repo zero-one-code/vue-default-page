@@ -1,29 +1,5 @@
-:root {
-  --vdp-text-color: #999;
-  --vdp-icon-color: #bbb;
-  --vdp-min-height: 80px;
-}
-
-.vdp {
-  &-pointer {
-    cursor: pointer;
-  }
-
-  &-block {
-    display: block;
-  }
-
-  &-center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  &-position {
-    position: relative !important;
-  }
-
-  &-min-height {
-    min-height: var(--vdp-min-height);
-  }
-}
+@import './base.less';
+@import '../components/core/index.less';
+@import '../components/picture/index.less';
+@import '../components/skeleton/index.less';
+@import '../components/icon/index.less';

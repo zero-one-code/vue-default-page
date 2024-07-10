@@ -2,32 +2,38 @@ English | [中文](./README.zh-CN.md)
 
 # Vue-Default-Page
 
-A Vue 3.0 custom directives plugin, with built-in directives such as `v-loading`, `v-skeleton`, `v-skeleton-avatar`, `v-skeleton-list`, `v-error`, and `v-empty`, dedicated to addressing issues related to waiting, feedback, and error during network requests.
+[![NPM Version](https://img.shields.io/npm/v/vue-default-page)](https://www.npmjs.com/package/vue-default-page)
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz_small.svg)](https://stackblitz.com/edit/vue-default-page?file=src%2FApp.vue)
+
+A Vue 3.0 custom directives plugin package, built-in with `v-loading`, `v-skeleton`, `v-skeleton-avatar`, `v-skeleton-list`, `v-error`, and `v-empty` default page directives, focusing on solving scenarios such as waiting, feedback, and error during network requests.
 
 ## Table of Contents
 
 - [Installation](#installation)
 - [Quickstart](#quickstart)
+  - [Full Import](#full-import)
+  - [Global Configuration](#global-configuration)
+  - [On-demand Import](#on-demand-import)
+  - [On-demand Import Global Configuration](#on-demand-import-global-configuration)
+  - [Partial Import](#partial-import)
+  - [Partial Import Configuration](#partial-import-configuration)
   - [Advanced](#advanced)
   - [Show Priority](#show-priority)
-- [Custom Options](#custom-options)
-  - [Common Options](#common-options)
-  - [Common Attribute Options](#common-attribute-options)
 - [v-loading](#v-loading)
-  - [Options](#options)
-  - [Attribute Options](#attribute-options)
+  - [VdpLoading](#vdploading)
+  - [Attribute Configurations](#attribute-configurations)
 - [v-skeleton](#v-skeleton)
-  - [Options](#options-1)
-  - [Attribute Options](#attribute-options-1)
+  - [VdpSkeleton](#vdpskeleton)
+  - [Attribute Configurations](#attribute-configurations-1)
   - [Animation](#animation)
-  - [v-skeleton-avatar Options](#v-skeleton-avatar-options)
-  - [v-skeleton-list Options](#v-skeleton-list-options)
+  - [VdpSkeletonAvatar](#vdpskeletonavatar)
+  - [VdpSkeletonList](#vdpskeletonlist)
 - [v-error](#v-error)
-  - [Options](#options-2)
-  - [Attribute Options](#attribute-options-2)
+  - [VdpError](#vdperror)
+  - [Attribute Configurations](#attribute-configurations-2)
 - [v-empty](#v-empty)
-  - [Options](#options-3)
-  - [Attribute Options](#attribute-options-3)
+  - [VdpEmpty](#vdpempty)
+  - [Attribute Configurations](#attribute-configurations-3)
 - [Adapt to Mobile](#adapt-to-mobile)
 - [Thanks](#thanks)
 - [LICENSE](#license)
@@ -40,13 +46,15 @@ npm i vue-default-page
 
 ## Quickstart
 
+### Full Import
+
 ```js
 // main.js
 
 // Import the directives
 import vueDefaultPage from 'vue-default-page';
 // Import the style
-import 'vue-default-page/style.css';
+import 'vue-default-page/index.css';
 
 import { createApp } from 'vue';
 
@@ -62,91 +70,7 @@ app.use(vueDefaultPage);
 <div v-loading="true"></div>
 ```
 
-Import a single directive.
-
-```js
-// main.js
-
-// Import the directive
-import { vdpLoading } from 'vue-default-page';
-
-import { createApp } from 'vue';
-
-const app = createApp();
-
-// Register the directive
-app.use(vdpLoading);
-```
-
-Import to the component.
-
-```vue
-<!-- demo.vue -->
-
-<script setup lang="js">
-  // Import the function
-  import { createVueDefaultPage } from 'vue-default-page';
-  // Create the directive
-  const vLoading = createVueDefaultPage('loading');
-</script>
-
-<template>
-  <div v-loading="true"></div>
-</template>
-```
-
-### Advanced
-
-```vue
-<!-- demo.vue -->
-
-<script setup lang="js">
-  const useRun = (api) => {
-    const loading = ref(false);
-    const error = ref(false);
-    const formatApi = async (...args) => {
-      error.value = false;
-      loading.value = true;
-      try {
-        const ret = await api(...args);
-        return ret;
-      } catch (e) {
-        error.value = true;
-        throw e;
-      } finally {
-        loading.value = false;
-      }
-    };
-    return [loading, error, formatApi];
-  };
-
-  const data = ref([]);
-  const api = () => {
-    // Simulate a request, usually return a Promise
-    return setTimeout(() => {
-      data.value = Array.from({ length: 10 }, (v, k) => k);
-    }, 1000);
-  };
-
-  const [loading, error, init] = useRun(api);
-
-  init();
-</script>
-
-<template>
-  <div v-loading="loading" v-error="[error, init]" v-empty="!data.length">
-    <div v-for="i in data" :key="i">{{ i }}</div>
-  </div>
-</template>
-```
-
-### Show Priority
-
-When all directives are true, it will be shown according to the following priority.
-
-`v-loading` > `v-skeleton` = `v-skeleton-avatar` = `v-skeleton-list` > `v-error` > `v-empty`
-
-## Custom Options
+### Global Configuration
 
 ```js
 // main.js
@@ -161,7 +85,36 @@ app.use(vueDefaultPage, {
 });
 ```
 
-Set options when import a single directive.
+| Name           | Description                      | Type                                              | Default |
+| -------------- | -------------------------------- | ------------------------------------------------- | ------- |
+| zIndex         | The stack level of the directive | number / string                                   | 100     |
+| background     | Background color of the mask     | string                                            | #fff    |
+| loading        | v-loading configurations         | boolean / [VdpLoading](#vdploading)               | true    |
+| skeleton       | v-skeleton configurations        | boolean / [VdpSkeleton](#vdpskeleton)             | true    |
+| skeletonAvatar | v-skeleton-avatar configurations | boolean / [VdpSkeletonAvatar](#vdpskeletonavatar) | false   |
+| skeletonList   | v-skeleton-list configurations   | boolean / [VdpSkeletonList](#vdpskeletonlist)     | false   |
+| error          | v-error configurations           | boolean / [VdpError](#vdperror)                   | true    |
+| empty          | v-empty configurations           | boolean / [VdpEmpty](#vdpempty)                   | true    |
+
+### On-demand Import
+
+```js
+// main.js
+
+// Import the directive
+import { vdpLoading } from 'vue-default-page';
+// Import the style
+import 'vue-default-page/index.css';
+
+import { createApp } from 'vue';
+
+const app = createApp();
+
+// Register the directive
+app.use(vdpLoading);
+```
+
+### On-demand Import Global Configuration
 
 ```js
 // main.js
@@ -174,12 +127,43 @@ app.use(vdpLoading, {
 });
 ```
 
-Set options when import to the component.
+| Name              | Description       | Configurations Type                     |
+| ----------------- | ----------------- | --------------------------------------- |
+| vdpLoading        | v-loading         | [VdpLoading](#vdploading)               |
+| vdpSkeleton       | v-skeleton        | [VdpSkeleton](#vdpskeleton)             |
+| vdpSkeletonAvatar | v-skeleton-avatar | [VdpSkeletonAvatar](#vdpskeletonavatar) |
+| vdpSkeletonList   | v-skeleton-list   | [VdpSkeletonList](#vdpskeletonlist)     |
+| vdpError          | v-error           | [VdpError](#vdperror)                   |
+| vdpEmpty          | v-empty           | [VdpEmpty](#vdpempty)                   |
+
+### Partial Import
 
 ```vue
 <!-- demo.vue -->
 
 <script setup lang="js">
+  // Import the directives creation function
+  import { createVueDefaultPage } from 'vue-default-page';
+  // Import the style
+  import 'vue-default-page/index.css';
+  // Create the directive
+  const vLoading = createVueDefaultPage('loading');
+</script>
+
+<template>
+  <div v-loading="true"></div>
+</template>
+```
+
+### Partial Import Configuration
+
+Method 1: Configure in the directives creation function, the detailed configurations is consistent with [On-demand Import Global Configuration](#on-demand-import-global-configuration).
+
+```vue
+<!-- demo.vue -->
+
+<script setup lang="js">
+  // Create the directive
   const vLoading = createVueDefaultPage('loading', {
     background: '#000',
     iconColor: '#fff',
@@ -187,9 +171,13 @@ Set options when import to the component.
     textColor: '#fff',
   });
 </script>
+
+<template>
+  <div v-loading="true"></div>
+</template>
 ```
 
-Set options through attributes on the element.
+Method 2: Add attribute configurations to the element.
 
 ```vue
 <!-- demo.vue -->
@@ -205,33 +193,55 @@ Set options through attributes on the element.
 </template>
 ```
 
-Set a boolean to disable directive you don't wish to register.
-
-```js
-// main.js
-
-app.use(vueDefaultPage, {
-  error: false,
-});
-```
-
-### Common Options
-
-| Name       | Description                      | Type            | Default |
-| ---------- | -------------------------------- | --------------- | ------- |
-| zIndex     | the stack level of the directive | number / string | 100     |
-| background | background color of the mask     | string          | #fff    |
-
-### Common Attribute Options
+Common attribute configurations, for specific directive attribute configurations, please refer to the detailed sections below.
 
 | Name           | Description                      | Type   | Default |
 | -------------- | -------------------------------- | ------ | ------- |
-| vdp-z-Index    | the stack level of the directive | string | 100     |
-| vdp-background | background color of the mask     | string | #fff    |
+| vdp-z-index    | The stack level of the directive | string | 100     |
+| vdp-background | Background color of the mask     | string | #fff    |
+
+### Advanced
+
+```vue
+<!-- demo.vue -->
+
+<script setup lang="js">
+  import { ref } from 'vue';
+  // npm i vue-hooks-plus
+  import { useRequest } from 'vue-hooks-plus';
+
+  const data = ref([]);
+  // Simulate the first request failure, and then refresh to request successfully.
+  let times = 0;
+  const api = () =>
+    new Promise((resolve, reject) => {
+      setTimeout(() => {
+        data.value = Array.from({ length: 10 }, (v, k) => k);
+        times ? resolve('Successful') : reject('Failed');
+        times++;
+      }, 2000);
+    });
+
+  // https://inhiblabcore.github.io/docs/hooks/useRequest
+  const { loading, error, refresh } = useRequest(api);
+</script>
+
+<template>
+  <div v-loading="loading" v-error="[!!error, refresh]" v-empty="!data.length">
+    <div v-for="i in data" :key="i">{{ i }}</div>
+  </div>
+</template>
+```
+
+### Show Priority
+
+When all directives are true, it will be shown according to the following priority.
+
+`v-loading` > `v-skeleton` = `v-skeleton-avatar` = `v-skeleton-list` > `v-error` > `v-empty`
 
 ## v-loading
 
-Custom icon, same option as [v-error](#v-error) and [v-empty](#v-empty).
+Custom icon, same configuration as [v-error](#v-error) and [v-empty](#v-empty).
 
 ```vue
 <!-- demo.vue -->
@@ -271,33 +281,33 @@ Custom icon, same option as [v-error](#v-error) and [v-empty](#v-empty).
 </style>
 ```
 
-### Options
+### VdpLoading
 
-| Name          | Description                                     | Type             | Default  |
-| ------------- | ----------------------------------------------- | ---------------- | -------- |
-| enable        | enable the directive                            | boolean          | true     |
-| text          | text                                            | string           | Loading… |
-| textColor     | text color                                      | string           | #999     |
-| iconColor     | icon color (disable when custom icon)           | string           | #bbb     |
-| miniIconColor | mini icon color (disable when custom mini icon) | string           | #bbb     |
-| icon          | custom icon                                     | string           | —        |
-| miniIcon      | custom mini icon                                | boolean / string | true     |
-| iconMaxSize   | maximum size of icon                            | number / string  | 24       |
-| iconShowText  | whether to show text when using large icon      | boolean          | true     |
-| zIndex        | the stack level of the directive                | number /string   | 100      |
-| background    | background color of the mask                    | string           | #fff     |
+| Name          | Description                                                                      | Type             | Default  |
+| ------------- | -------------------------------------------------------------------------------- | ---------------- | -------- |
+| enable        | Enable the directive (Enable when [Global Configuration](#global-configuration)) | boolean          | true     |
+| text          | Text                                                                             | string           | Loading… |
+| textColor     | Text color                                                                       | string           | #999     |
+| iconColor     | Icon color (Disable when custom icon)                                            | string           | #bbb     |
+| miniIconColor | Mini icon color (Disable when custom mini icon)                                  | string           | #bbb     |
+| icon          | Custom icon                                                                      | string           | —        |
+| miniIcon      | Custom mini icon                                                                 | boolean / string | true     |
+| iconMaxSize   | Maximum size of icon                                                             | number / string  | 24       |
+| iconShowText  | Whether to show text when using large icon                                       | boolean          | true     |
+| zIndex        | The stack level of the directive                                                 | number / string  | 100      |
+| background    | Background color of the mask                                                     | string           | #fff     |
 
-### Attribute Options
+### Attribute Configurations
 
 | Name                        | Description                                    | Type   | Default  |
 | --------------------------- | ---------------------------------------------- | ------ | -------- |
-| vdp-loading-text            | text                                           | string | Loading… |
-| vdp-loading-text-color      | text color                                     | string | #999     |
-| vdp-loading-icon-color      | icon color (disable when custom icon)          | string | #bbb     |
-| vdp-loading-mini-icon-color | mini icon color (disable when custom mini ico) | string | #bbb     |
-| vdp-loading-icon            | custom icon                                    | string | —        |
-| vdp-loading-mini-icon       | custom mini icon                               | string | —        |
-| vdp-loading-icon-max-size   | maximum size of icon                           | string | 24       |
+| vdp-loading-text            | Text                                           | string | Loading… |
+| vdp-loading-text-color      | Text color                                     | string | #999     |
+| vdp-loading-icon-color      | Icon color (Disable when custom icon)          | string | #bbb     |
+| vdp-loading-mini-icon-color | Mini icon color (Disable when custom mini ico) | string | #bbb     |
+| vdp-loading-icon            | Custom icon                                    | string | —        |
+| vdp-loading-mini-icon       | Custom mini icon                               | string | —        |
+| vdp-loading-icon-max-size   | Maximum size of icon                           | string | 24       |
 
 ## v-skeleton
 
@@ -313,7 +323,30 @@ Default show avatar and list skeleton, can also be used independently.
 </template>
 ```
 
-These two directives can be used independently by registering them. Unlike other directives, they are false by default and need to be manually activated.
+### VdpSkeleton
+
+| Name          | Description                                                                      | Type                                                       | Default |
+| ------------- | -------------------------------------------------------------------------------- | ---------------------------------------------------------- | ------- |
+| enable        | Enable the directive (Enable when [Global Configuration](#global-configuration)) | boolean                                                    | true    |
+| animation     | Animation                                                                        | boolean / ('avatar' ｜ 'list')[] / [Animation](#animation) | true    |
+| avatarMaxSize | Maximum size of avatar                                                           | number / string                                            | 54      |
+| zIndex        | The stack level of the directive                                                 | number / string                                            | 100     |
+| background    | Background color of the mask                                                     | string                                                     | #fff    |
+
+### Attribute Configurations
+
+| Name                         | Description            | Type   | Default |
+| ---------------------------- | ---------------------- | ------ | ------- |
+| vdp-skeleton-avatar-max-size | Maximum size of avatar | string | 54      |
+
+### Animation
+
+| Name   | Description             | Type    | Default |
+| ------ | ----------------------- | ------- | ------- |
+| avatar | Enable avatar animation | boolean | true    |
+| list   | Enable list animation   | boolean | true    |
+
+Avatar or list skeleton can also be used individually by registering directives, but unlike other directives, these two are `false` by default and need to be manually enabled.
 
 ```js
 // main.js
@@ -333,47 +366,28 @@ app.use(vueDefaultPage, {
 </template>
 ```
 
-### Options
+### VdpSkeletonAvatar
 
-| Name          | Description                      | Type                                         | Default |
-| ------------- | -------------------------------- | -------------------------------------------- | ------- |
-| enable        | enable the directive             | boolean                                      | true    |
-| animation     | animation                        | boolean / ('avatar' ｜ 'list')[] / Animation | true    |
-| avatarMaxSize | maximum size of avatar           | number / string                              | 54      |
-| zIndex        | the stack level of the directive | number /string                               | 100     |
-| background    | background color of the mask     | string                                       | #fff    |
+| Name          | Description                                                                      | Type            | Default |
+| ------------- | -------------------------------------------------------------------------------- | --------------- | ------- |
+| enable        | Enable the directive (Enable when [Global Configuration](#global-configuration)) | boolean         | false   |
+| animation     | Animation                                                                        | boolean         | true    |
+| avatarMaxSize | Maximum size of avatar                                                           | number / string | 54      |
+| zIndex        | The stack level of the directive                                                 | number / string | 100     |
+| background    | Background color of the mask                                                     | string          | #fff    |
 
-### Attribute Options
+### VdpSkeletonList
 
-| Name                         | Description            | Type   | Default |
-| ---------------------------- | ---------------------- | ------ | ------- |
-| vdp-skeleton-avatar-max-size | maximum size of avatar | string | 54      |
-
-### Animation
-
-| Name   | Description | Type    | Default |
-| ------ | ----------- | ------- | ------- |
-| avatar | show avatar | boolean | true    |
-| list   | show list   | boolean | true    |
-
-### v-skeleton-avatar Options
-
-| Name          | Description            | Type            | Default |
-| ------------- | ---------------------- | --------------- | ------- |
-| enable        | enable the directive   | boolean         | false   |
-| animation     | animation              | boolean         | true    |
-| avatarMaxSize | maximum size of avatar | number / string | 54      |
-
-### v-skeleton-list Options
-
-| Name      | Description          | Type    | Default |
-| --------- | -------------------- | ------- | ------- |
-| enable    | enable the directive | boolean | false   |
-| animation | animation            | boolean | true    |
+| Name       | Description                                                                      | Type            | Default |
+| ---------- | -------------------------------------------------------------------------------- | --------------- | ------- |
+| enable     | Enable the directive (Enable when [Global Configuration](#global-configuration)) | boolean         | false   |
+| animation  | Animation                                                                        | boolean         | true    |
+| zIndex     | The stack level of the directive                                                 | number / string | 100     |
+| background | Background color of the mask                                                     | string          | #fff    |
 
 ## v-error
 
-Like other directives, it can be controlled to show or hide using a boolean.
+Like other directives, it can be controlled to show or hide using a Boolean.
 
 ```vue
 <!-- demo.vue -->
@@ -383,7 +397,7 @@ Like other directives, it can be controlled to show or hide using a boolean.
 </template>
 ```
 
-You can also pass a refresh function in an array. For detailed usage, refer to [Advanced](#Advanced).
+You can also pass a refresh function in an Array. For detailed usage, refer to [Advanced](#advanced).
 
 ```vue
 <!-- demo.vue -->
@@ -393,41 +407,41 @@ You can also pass a refresh function in an array. For detailed usage, refer to [
 </template>
 ```
 
-### Options
+### VdpError
 
-| Name         | Description                                           | Type             | Default            |
-| ------------ | ----------------------------------------------------- | ---------------- | ------------------ |
-| enable       | enable the directive                                  | boolean          | true               |
-| text         | text                                                  | string           | Network Error      |
-| refreshText  | refresh text (enable when refresh function is passed) | boolean / string | , Click to Refresh |
-| textColor    | text color                                            | string           | #999               |
-| icon         | custom icon                                           | string           | —                  |
-| miniIcon     | custom mini icon                                      | boolean / string | true               |
-| iconMaxSize  | maximum size of icon                                  | number /string   | 180                |
-| iconShowText | whether to show text when using large icon            | boolean          | true               |
-| zIndex       | the stack level of the directive                      | number /string   | 100                |
-| background   | background color of the mask                          | string           | #fff               |
+| Name         | Description                                                                      | Type             | Default            |
+| ------------ | -------------------------------------------------------------------------------- | ---------------- | ------------------ |
+| enable       | Enable the directive (Enable when [Global Configuration](#global-configuration)) | boolean          | true               |
+| text         | Text                                                                             | string           | Network Error      |
+| refreshText  | Refresh text (Enable when refresh function is passed)                            | boolean / string | , Click to Refresh |
+| textColor    | Text color                                                                       | string           | #999               |
+| icon         | Custom icon                                                                      | string           | —                  |
+| miniIcon     | Custom mini icon                                                                 | boolean / string | true               |
+| iconMaxSize  | Maximum size of icon                                                             | number / string  | 180                |
+| iconShowText | Whether to show text when using large icon                                       | boolean          | true               |
+| zIndex       | The stack level of the directive                                                 | number / string  | 100                |
+| background   | Background color of the mask                                                     | string           | #fff               |
 
-### Attribute Options
+### Attribute Configurations
 
-| Name                    | Description                                           | Type             | Default            |
-| ----------------------- | ----------------------------------------------------- | ---------------- | ------------------ |
-| vdp-error-text          | text                                                  | string           | Network Error      |
-| vdp-error-refresh-text  | refresh text (enable when refresh function is passed) | boolean / string | , Click to Refresh |
-| vdp-error-text-color    | text color                                            | string           | #999               |
-| vdp-error-icon          | custom icon                                           | string           | —                  |
-| vdp-error-mini-icon     | custom mini icon                                      | string           | —                  |
-| vdp-error-icon-max-size | maximum size of icon                                  | string           | 180                |
+| Name                    | Description                                           | Type   | Default            |
+| ----------------------- | ----------------------------------------------------- | ------ | ------------------ |
+| vdp-error-text          | Text                                                  | string | Network Error      |
+| vdp-error-refresh-text  | Refresh text (Enable when refresh function is passed) | string | , Click to Refresh |
+| vdp-error-text-color    | Text color                                            | string | #999               |
+| vdp-error-icon          | Custom icon                                           | string | —                  |
+| vdp-error-mini-icon     | Custom mini icon                                      | string | —                  |
+| vdp-error-icon-max-size | Maximum size of icon                                  | string | 180                |
 
 ## v-empty
 
-All directives will automatically adjust their height according to the container's size, and exhibit varying display states.
+All directives will automatically adjust their height according to the container's size, and they have different display states.
 
 ```vue
 <!-- demo.vue -->
 
 <template>
-  <div v-empty="true" style="{height: 1000px;}"></div>
+  <div v-empty="true" style="height: 500px;"></div>
   <div v-empty="true"></div>
 </template>
 ```
@@ -440,35 +454,35 @@ The maximum icon size can be adjusted using the `iconMaxSize` or the `vdp-empty-
 <template>
   <div
     v-empty="true"
-    style="{height: 1000px;}"
-    vdp-empty-icon-max-size="500"
+    style="height: 500px;"
+    vdp-empty-icon-max-size="400"
   ></div>
 </template>
 ```
 
-### Options
+### VdpEmpty
 
-| Name         | Description                           | Type             | Default |
-| ------------ | ------------------------------------- | ---------------- | ------- |
-| enable       | enable the directive                  | boolean          | true    |
-| text         | text                                  | string           | No Data |
-| textColor    | text color                            | string           | #999    |
-| icon         | custom icon                           | string           | —       |
-| miniIcon     | custom mini icon                      | boolean / string | true    |
-| iconMaxSize  | maximum size of icon                  | number /string   | 180     |
-| iconShowText | whether to show text when using large | boolean          | true    |
-| zIndex       | the stack level of the directive      | number /string   | 100     |
-| background   | background color of the mask          | string           | #fff    |
+| Name         | Description                                                                      | Type             | Default |
+| ------------ | -------------------------------------------------------------------------------- | ---------------- | ------- |
+| enable       | Enable the directive (Enable when [Global Configuration](#global-configuration)) | boolean          | true    |
+| text         | Text                                                                             | string           | No Data |
+| textColor    | Text color                                                                       | string           | #999    |
+| icon         | Custom icon                                                                      | string           | —       |
+| miniIcon     | Custom mini icon                                                                 | boolean / string | false   |
+| iconMaxSize  | Maximum size of icon                                                             | number / string  | 180     |
+| iconShowText | Whether to show text when using large                                            | boolean          | true    |
+| zIndex       | The stack level of the directive                                                 | number / string  | 100     |
+| background   | Background color of the mask                                                     | string           | #fff    |
 
-### Attribute Options
+### Attribute Configurations
 
 | Name                    | Description          | Type   | Default |
 | ----------------------- | -------------------- | ------ | ------- |
-| vdp-empty-text          | text                 | string | No Data |
-| vdp-empty-text-color    | text color           | string | #999    |
-| vdp-empty-icon          | custom icon          | string | —       |
-| vdp-empty-mini-icon     | custom mini icon     | string | —       |
-| vdp-empty-icon-max-size | maximum size of icon | string | 180     |
+| vdp-empty-text          | Text                 | string | No Data |
+| vdp-empty-text-color    | Text color           | string | #999    |
+| vdp-empty-icon          | Custom icon          | string | —       |
+| vdp-empty-mini-icon     | Custom mini icon     | string | —       |
+| vdp-empty-icon-max-size | Maximum size of icon | string | 180     |
 
 ## Adapt to Mobile
 

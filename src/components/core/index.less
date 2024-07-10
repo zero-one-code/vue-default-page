@@ -1,0 +1,16 @@
+// :host 兼容 Web Components 写法
+:root,
+:host {
+  --vdp-core-z-index: 100;
+  --vdp-core-padding: 10px;
+  --vdp-core-bg: #fff;
+}
+
+.vdp-core {
+  position: absolute;
+  inset: 0;
+  // --vdp-main 兼容 1.0.2 之前版本
+  z-index: var(--vdp-main-z-index, var(--vdp-core-z-index));
+  padding: var(--vdp-main-padding, var(--vdp-core-padding));
+  background: var(--vdp-main-bg, var(--vdp-core-bg));
+}

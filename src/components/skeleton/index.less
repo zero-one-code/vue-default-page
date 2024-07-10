@@ -1,0 +1,77 @@
+// :host 兼容 Web Components 写法
+:root,
+:host {
+  --vdp-skeleton-w: 100%;
+  --vdp-skeleton-h: 100%;
+  --vdp-skeleton-space: 14px;
+  --vdp-skeleton-bg: #f0f2f5;
+  --vdp-skeleton-deep-bg: #e6e8eb;
+  --vdp-skeleton-radius: 4px;
+  --vdp-skeleton-avatar-w: 100%;
+  --vdp-skeleton-avatar-h: 100%;
+  --vdp-skeleton-avatar-min-w: var(--vdp-skeleton-list-h);
+  --vdp-skeleton-avatar-min-h: var(--vdp-skeleton-list-h);
+  --vdp-skeleton-avatar-max-w: 54px;
+  --vdp-skeleton-avatar-max-h: 54px;
+  --vdp-skeleton-list-h: 20px;
+  --vdp-skeleton-list-space: var(--vdp-skeleton-space);
+}
+
+.vdp-skeleton {
+  display: flex;
+  width: var(--vdp-skeleton-w);
+  height: var(--vdp-skeleton-h);
+
+  &-space {
+    margin-right: var(--vdp-skeleton-space);
+  }
+
+  &-avatar {
+    flex: none;
+    width: var(--vdp-skeleton-avatar-w);
+    height: var(--vdp-skeleton-avatar-h);
+    min-width: var(--vdp-skeleton-avatar-min-w);
+    min-height: var(--vdp-skeleton-avatar-min-h);
+    max-width: var(--vdp-skeleton-avatar-max-w);
+    max-height: var(--vdp-skeleton-avatar-max-h);
+  }
+
+  &-list {
+    flex: auto;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    li {
+      height: var(--vdp-skeleton-list-h);
+      margin-bottom: var(--vdp-skeleton-list-space);
+    }
+  }
+
+  &-avatar,
+  &-list li {
+    background: var(--vdp-skeleton-bg);
+    border-radius: var(--vdp-skeleton-radius);
+  }
+
+  & &-animation {
+    background: linear-gradient(
+      90deg,
+      var(--vdp-skeleton-bg) 25%,
+      var(--vdp-skeleton-deep-bg) 37%,
+      var(--vdp-skeleton-bg) 63%
+    );
+    background-size: 400% 100%;
+    animation: vdp-skeleton-bg 1.4s ease infinite;
+  }
+}
+
+@keyframes vdp-skeleton-bg {
+  0% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0 50%;
+  }
+}
