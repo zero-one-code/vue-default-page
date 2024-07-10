@@ -20,28 +20,35 @@
   },
   "type": "module",
   "files": [
-    "dist"
+    "dist",
+    "web-components"
   ],
   "main": "dist/index.cjs",
   "module": "dist/index.js",
   "types": "dist/types/index.d.ts",
   "style": "dist/style.css",
   "exports": {
+    "./web-components": {
+      "import": "./dist/web-components/index.js",
+      "require": "./dist/web-components/index.cjs",
+      "types": "./dist/web-components/types/index.d.ts"
+    },
+    "./index.css": "./dist/style.css",
     ".": {
       "import": "./dist/index.js",
       "require": "./dist/index.cjs",
       "types": "./dist/types/index.d.ts"
-    },
-    "./index.css": "./dist/style.css"
+    }
   },
   "scripts": {
     "dev": "vite",
-    "build": "run-p type-check \"build-only {@}\" --",
+    "build": "run-p type-check \"build-js {@}\" --",
     "preview": "vite preview",
     "test:unit": "vitest",
     "test:e2e": "start-server-and-test preview http://localhost:4173 'cypress run --e2e'",
     "test:e2e:dev": "start-server-and-test 'vite dev --port 4173' http://localhost:4173 'cypress open --e2e'",
     "build-only": "vite build",
+    "build-js": "node scripts/build.js",
     "type-check": "vue-tsc --build --force",
     "lint": "eslint \"**/*.{js,ts,jsx,tsx,vue}\" --fix",
     "format": "prettier \"**/*.{js,ts,jsx,tsx,vue,css,less}\" --write",

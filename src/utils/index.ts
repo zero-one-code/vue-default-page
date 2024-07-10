@@ -1,4 +1,5 @@
-import { isNil, kebabCase } from 'lodash';
+import { chain, isNil, kebabCase } from 'lodash';
+import type { CamelName, CoreProps } from '../components/core/type';
 
 export function isNumeric(value: number | string) {
   return typeof value === 'number' || /^\d+(\.\d+)?$/.test(value);
@@ -17,3 +18,22 @@ export function getPrefix(string = '', chars = '-') {
 }
 
 export const INSTANCE_KEY = Symbol(getPrefix());
+
+export const DIRECTIVE_NAMES: CamelName[] = [
+  'loading',
+  'skeleton',
+  'skeletonAvatar',
+  'skeletonList',
+  'error',
+  'empty',
+];
+
+export const isShowMask = (props: CoreProps) =>
+  chain(props)
+    .pick(DIRECTIVE_NAMES)
+    .some((val) => (Array.isArray(val) ? val[0] : !!val))
+    .value();
+
+export function isLayoutPosition(position: string) {
+  return /relative|absolute|fixed/i.test(position);
+}

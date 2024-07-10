@@ -1,0 +1,5 @@
+{
+  "main": "../dist/web-components/index.cjs",
+  "module": "../dist/web-components/index.js",
+  "types": "../dist/types/web-components/index.d.ts"
+}
