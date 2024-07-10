@@ -1,9 +1,15 @@
 name: test
 
 on:
+  push:
+    branches:
+      - '**'
+
   pull_request:
     branches:
-      - dev
+      - main
+
+  workflow_dispatch:
 
 jobs:
   test:
