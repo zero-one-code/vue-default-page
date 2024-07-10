@@ -8,6 +8,7 @@ export default defineConfig({
   build: {
     target: 'es2015',
     copyPublicDir: false,
+    minify: false,
     rollupOptions: {
       external: ['lodash'],
     },
