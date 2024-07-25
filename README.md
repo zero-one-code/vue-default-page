@@ -53,8 +53,6 @@ npm i vue-default-page
 
 // Import the directives
 import vueDefaultPage from 'vue-default-page';
-// Import the style
-import 'vue-default-page/index.css';
 
 import { createApp } from 'vue';
 
@@ -103,8 +101,6 @@ app.use(vueDefaultPage, {
 
 // Import the directive
 import { vdpLoading } from 'vue-default-page';
-// Import the style
-import 'vue-default-page/index.css';
 
 import { createApp } from 'vue';
 
@@ -144,8 +140,6 @@ app.use(vdpLoading, {
 <script setup lang="js">
   // Import the directives creation function
   import { createVueDefaultPage } from 'vue-default-page';
-  // Import the style
-  import 'vue-default-page/index.css';
   // Create the directive
   const vLoading = createVueDefaultPage('loading');
 </script>

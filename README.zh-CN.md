@@ -51,8 +51,6 @@ npm i vue-default-page
 
 // 引入指令
 import vueDefaultPage from 'vue-default-page';
-// 引入样式
-import 'vue-default-page/index.css';
 
 import { createApp } from 'vue';
 
@@ -101,8 +99,6 @@ app.use(vueDefaultPage, {
 
 // 引入指令
 import { vdpLoading } from 'vue-default-page';
-// 引入样式
-import 'vue-default-page/index.css';
 
 import { createApp } from 'vue';
 
@@ -142,8 +138,6 @@ app.use(vdpLoading, {
 <script setup lang="js">
   // 引入指令创建方法
   import { createVueDefaultPage } from 'vue-default-page';
-  // 引入样式
-  import 'vue-default-page/index.css';
   // 创建指令
   const vLoading = createVueDefaultPage('loading');
 </script>
