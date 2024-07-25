@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url';
 export default defineConfig({
   plugins: [vue(), vueJsx()],
   build: {
+    target: 'es2015',
     copyPublicDir: false,
     rollupOptions: {
       external: ['lodash'],
