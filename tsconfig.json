@@ -10,9 +10,6 @@
     {
       "path": "./tsconfig.vitest.json",
     },
-    {
-      "path": "./tsconfig.build.json",
-    },
   ],
   "compilerOptions": {
     "module": "NodeNext",
