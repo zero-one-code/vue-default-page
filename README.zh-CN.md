@@ -371,13 +371,17 @@ app.use(vueDefaultPage, {
 | enable        | 是否使用指令（仅在[全局配置](#全局配置)时生效） | boolean         | false  |
 | animation     | 动画                                            | boolean         | true   |
 | avatarMaxSize | 头像最大尺寸                                    | number / string | 54     |
+| zIndex        | 指令的层叠顺序                                  | number / string | 100    |
+| background    | 背景遮罩的颜色                                  | string          | #fff   |
 
 ### VdpSkeletonList 配置项
 
-| 名称      | 说明                                            | 类型    | 默认值 |
-| --------- | ----------------------------------------------- | ------- | ------ |
-| enable    | 是否使用指令（仅在[全局配置](#全局配置)时生效） | boolean | false  |
-| animation | 动画                                            | boolean | true   |
+| 名称       | 说明                                            | 类型            | 默认值 |
+| ---------- | ----------------------------------------------- | --------------- | ------ |
+| enable     | 是否使用指令（仅在[全局配置](#全局配置)时生效） | boolean         | false  |
+| animation  | 动画                                            | boolean         | true   |
+| zIndex     | 指令的层叠顺序                                  | number / string | 100    |
+| background | 背景遮罩的颜色                                  | string          | #fff   |
 
 ## v-error
 
@@ -462,7 +466,7 @@ app.use(vueDefaultPage, {
 | text         | 文案                                            | string           | No Data |
 | textColor    | 文案颜色                                        | string           | #999    |
 | icon         | 自定义图标                                      | string           | —       |
-| miniIcon     | 自定义小图标                                    | boolean / string | true    |
+| miniIcon     | 自定义小图标                                    | boolean / string | false   |
 | iconMaxSize  | 图标最大尺寸                                    | number / string  | 180     |
 | iconShowText | 大图标时是否显示文案                            | boolean          | true    |
 | zIndex       | 指令的层叠顺序                                  | number / string  | 100     |

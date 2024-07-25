@@ -38,7 +38,6 @@ A Vue 3.0 custom directives plugin package, built-in with `v-loading`, `v-skelet
 - [Thanks](#thanks)
 - [LICENSE](#license)
 
-
 ## Installation
 
 ```sh
@@ -374,13 +373,17 @@ app.use(vueDefaultPage, {
 | enable        | Enable the directive (Enable when [Global Configuration](#global-configuration)) | boolean         | false   |
 | animation     | Animation                                                                        | boolean         | true    |
 | avatarMaxSize | Maximum size of avatar                                                           | number / string | 54      |
+| zIndex        | The stack level of the directive                                                 | number / string | 100     |
+| background    | Background color of the mask                                                     | string          | #fff    |
 
 ### VdpSkeletonList
 
-| Name      | Description                                                                      | Type    | Default |
-| --------- | -------------------------------------------------------------------------------- | ------- | ------- |
-| enable    | Enable the directive (Enable when [Global Configuration](#global-configuration)) | boolean | false   |
-| animation | Animation                                                                        | boolean | true    |
+| Name       | Description                                                                      | Type            | Default |
+| ---------- | -------------------------------------------------------------------------------- | --------------- | ------- |
+| enable     | Enable the directive (Enable when [Global Configuration](#global-configuration)) | boolean         | false   |
+| animation  | Animation                                                                        | boolean         | true    |
+| zIndex     | The stack level of the directive                                                 | number / string | 100     |
+| background | Background color of the mask                                                     | string          | #fff    |
 
 ## v-error
 
@@ -465,7 +468,7 @@ The maximum icon size can be adjusted using the `iconMaxSize` or the `vdp-empty-
 | text         | Text                                                                             | string           | No Data |
 | textColor    | Text color                                                                       | string           | #999    |
 | icon         | Custom icon                                                                      | string           | —       |
-| miniIcon     | Custom mini icon                                                                 | boolean / string | true    |
+| miniIcon     | Custom mini icon                                                                 | boolean / string | false   |
 | iconMaxSize  | Maximum size of icon                                                             | number / string  | 180     |
 | iconShowText | Whether to show text when using large                                            | boolean          | true    |
 | zIndex       | The stack level of the directive                                                 | number / string  | 100     |
