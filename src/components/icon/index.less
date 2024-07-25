@@ -1,0 +1,50 @@
+// :host 兼容 Web Components 写法
+:root,
+:host {
+  --vdp-icon-color: #bbb;
+}
+
+@keyframes vdp-icon-loading-rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes vdp-icon-loading-stroke {
+  0% {
+    stroke-dasharray: 1, 500;
+    stroke-dashoffset: 0;
+  }
+
+  50% {
+    stroke-dasharray: 350, 500;
+    stroke-dashoffset: -160px;
+  }
+
+  100% {
+    stroke-dasharray: 350, 500;
+    stroke-dashoffset: -450px;
+  }
+}
+
+.vdp-icon {
+  &-stroke {
+    stroke: var(--vdp-icon-color);
+  }
+
+  &-loading {
+    animation: vdp-icon-loading-rotate 3s linear infinite;
+
+    circle {
+      animation: vdp-icon-loading-stroke 1.5s ease-in-out infinite;
+    }
+  }
+
+  &-error {
+    &-mini {
+      &-fill {
+        fill: var(--vdp-icon-color);
+      }
+    }
+  }
+}

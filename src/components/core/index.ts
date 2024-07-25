@@ -1,7 +1,6 @@
-import { camelCase, omit } from 'lodash';
+import { camelCase, pick } from 'lodash';
 import {
   type Directive,
-  type DirectiveBinding,
   createApp,
   h,
   nextTick,
@@ -9,37 +8,42 @@ import {
   type Plugin,
   toRaw,
 } from 'vue';
-import VueDefaultPage, { type Props } from './components/index.vue';
-import type { DirectiveOptions, Name, Value, CamelName, El } from './types';
-import './style/index.less';
-import { getPrefix, INSTANCE_KEY } from './utils';
+import Core from './Core.vue';
+import {
+  DIRECTIVE_NAMES,
+  INSTANCE_KEY,
+  getPrefix,
+  isLayoutPosition,
+  isShowMask,
+} from '../../utils';
+import type {
+  CamelName,
+  DirectiveOptions,
+  InstanceOptions,
+  Name,
+  CoreProps,
+  VdpValue,
+  VueDefaultPage,
+  VdpEl,
+} from './type';
+import { PUBLIC_PROPS_KEYS } from './utils';
 
-export const publicPropsKeys = ['zIndex', 'background'] as const;
-
-interface InstanceOptions<T extends Name> {
-  name: T;
-  options?: DirectiveOptions<T>;
-  el: El;
-  binding: DirectiveBinding<Value<T>>;
-}
-
-function getArrVal<T extends Name>(
-  instanceOptions: InstanceOptions<T>
-): [boolean, (() => void)?] {
+function getValue<T extends Name>(instanceOptions: InstanceOptions<T>) {
   const {
     name,
     binding: { value },
   } = instanceOptions;
-  if (typeof value === 'boolean') return [value];
-  if (name !== 'error') throw new Error(`v-${name} 传参类型只能为布尔值`);
-  return value;
+  if (typeof value === 'boolean') return value;
+  if (name !== 'error')
+    throw new Error(`The expected param type for v-${name} is a Boolean`);
+  return value[0];
 }
 
-function create(el: El) {
+function create(el: VdpEl) {
   if (el[INSTANCE_KEY]) return;
-  const props: Props = reactive({});
+  const props: CoreProps = reactive({});
   const instance = createApp({
-    render: () => h(VueDefaultPage, props),
+    render: () => h(Core, props),
   });
   el[INSTANCE_KEY] = {
     props,
@@ -49,13 +53,11 @@ function create(el: El) {
   el.appendChild(vm.$el);
 }
 
-async function setStyle(el: El) {
+async function setStyle(el: VdpEl) {
   await nextTick();
   const { position } = getComputedStyle(el); // 获取最终样式
   const classes: string[] = [];
-  position !== 'absolute' &&
-    position !== 'fixed' &&
-    classes.push(getPrefix('position'));
+  isLayoutPosition(position) || classes.push(getPrefix('position'));
   el.clientHeight <= 80 && classes.push(getPrefix('min-height'));
   el.classList.add(...classes);
 }
@@ -78,7 +80,7 @@ function getProps<T extends Name>(instanceOptions: InstanceOptions<T>) {
   const regExpName = new RegExp(
     [
       `^${getPrefix(name)}`,
-      ...publicPropsKeys.map((key) => getPrefix(key)),
+      ...PUBLIC_PROPS_KEYS.map((key) => getPrefix(key)),
     ].join('|')
   );
   const regExpReplace = new RegExp(`^(${getPrefix(name)}-|${getPrefix()}-)`);
@@ -96,37 +98,26 @@ function getProps<T extends Name>(instanceOptions: InstanceOptions<T>) {
   return {
     ...options,
     ...attrProps,
-  } as DirectiveOptions<T>;
+  };
 }
 
 function setProps<T extends Name>(instanceOptions: InstanceOptions<T>) {
   const { name, el } = instanceOptions;
   if (!el[INSTANCE_KEY]) return;
 
-  const [value, onRefresh] = getArrVal(instanceOptions);
-
-  if (value) {
-    // 设置 error 刷新事件
-    onRefresh && (el[INSTANCE_KEY].props.onRefresh = onRefresh);
-
-    const allProps = getProps(instanceOptions);
-
-    // 设置父组件样式
-    publicPropsKeys.forEach(
-      (key) => (el[INSTANCE_KEY]!.props[key] = allProps[key] as string)
-    );
-
+  if (getValue(instanceOptions)) {
     // 设置子组件 Props
     const key = `${camelCase(name)}Props` as `${CamelName}Props`;
     const props = el[INSTANCE_KEY].props[key];
-    const childProps = omit(allProps, publicPropsKeys);
+    const childProps = getProps(instanceOptions);
     childProps &&
       toRaw(props) !== childProps &&
       (el[INSTANCE_KEY].props[key] = childProps);
   }
 
   // 设置指令类型
-  el[INSTANCE_KEY].props[getName(instanceOptions)] = value;
+  (el[INSTANCE_KEY].props[getName<T>(instanceOptions)] as VdpValue<T>) =
+    instanceOptions.binding.value;
 }
 
 function show<T extends Name>(instanceOptions: InstanceOptions<T>) {
@@ -136,16 +127,16 @@ function show<T extends Name>(instanceOptions: InstanceOptions<T>) {
   setProps(instanceOptions);
 }
 
-function removeInstance(el: El) {
+function removeInstance(el: VdpEl) {
   el[INSTANCE_KEY]?.unmount();
   delete el[INSTANCE_KEY];
 }
 
-function removeStyle(el: El) {
+function removeStyle(el: VdpEl) {
   el.classList.remove(getPrefix('position'), getPrefix('min-height'));
 }
 
-function destroy(el: El) {
+function destroy(el: VdpEl) {
   if (!el[INSTANCE_KEY]) return;
   removeInstance(el);
   removeStyle(el);
@@ -155,10 +146,8 @@ async function close<T extends Name>(instanceOptions: InstanceOptions<T>) {
   setProps(instanceOptions);
   await nextTick(); // 等待其他指令赋值后再判断，防止组件过度创建与销毁
   const { el } = instanceOptions;
-  if (!el[INSTANCE_KEY]) return;
-  Object.values(el[INSTANCE_KEY].props).some(
-    (val) => typeof val === 'boolean' && val
-  ) || destroy(el);
+  if (!el[INSTANCE_KEY] || isShowMask(el[INSTANCE_KEY].props)) return;
+  destroy(el);
 }
 
 export function createVueDefaultPage<T extends Name>(
@@ -168,20 +157,20 @@ export function createVueDefaultPage<T extends Name>(
   return {
     mounted(el, binding) {
       const instanceOptions = { name, options, el, binding };
-      getArrVal(instanceOptions)[0] && show(instanceOptions);
+      getValue(instanceOptions) && show(instanceOptions);
     },
     updated(el, binding) {
       const { value, oldValue } = binding;
       const instanceOptions = { name, options, el, binding };
       if (value === oldValue) return setProps(instanceOptions);
-      getArrVal(instanceOptions)[0]
+      getValue(instanceOptions)
         ? show(instanceOptions)
         : close(instanceOptions);
     },
     unmounted(el) {
       destroy(el);
     },
-  } as Directive<El, Value<T>>;
+  } as Directive<VdpEl, VdpValue<T>>;
 }
 
 export function createPlugin<T extends Name>(name: T) {
@@ -191,3 +180,25 @@ export function createPlugin<T extends Name>(name: T) {
     },
   } as Plugin<[options?: DirectiveOptions<T>]>;
 }
+
+export const vueDefaultPage: Plugin<[options?: VueDefaultPage]> = {
+  install(app, options = {}) {
+    DIRECTIVE_NAMES.forEach((name) => {
+      const currentOptions = options[name] ?? {};
+      const { enable, ...otherOptions } =
+        typeof currentOptions === 'boolean'
+          ? { enable: currentOptions }
+          : currentOptions;
+      const isEnable =
+        enable ?? !['skeletonAvatar', 'skeletonList'].includes(name);
+      if (!isEnable) return;
+      app.directive(
+        name,
+        createVueDefaultPage(name, {
+          ...pick(options, PUBLIC_PROPS_KEYS),
+          ...otherOptions,
+        })
+      );
+    });
+  },
+};

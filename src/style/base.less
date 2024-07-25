@@ -1,0 +1,30 @@
+// :host 兼容 Web Components 写法
+:root,
+:host {
+  --vdp-text-color: #999;
+  --vdp-min-height: 80px;
+}
+
+.vdp {
+  &-pointer {
+    cursor: pointer;
+  }
+
+  &-block {
+    display: block;
+  }
+
+  &-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &-position {
+    position: relative !important;
+  }
+
+  &-min-height {
+    min-height: var(--vdp-min-height);
+  }
+}

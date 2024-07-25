@@ -1,0 +1,55 @@
+// :host 兼容 Web Components 写法
+:root,
+:host {
+  --vdp-picture-w: 100%;
+  --vdp-picture-h: 100%;
+  --vdp-picture-space-y: 6px;
+  --vdp-picture-space-x: 0;
+  --vdp-picture-icon-max-h: 180px;
+  --vdp-picture-text-size: 14px;
+  --vdp-picture-text-space: 4px;
+  --vdp-picture-text-icon-min-w: 1em;
+  --vdp-picture-text-icon-min-h: 1em;
+}
+
+.vdp-picture {
+  flex-direction: column;
+  width: var(--vdp-picture-w);
+  height: var(--vdp-picture-h);
+
+  &-space {
+    margin: var(--vdp-picture-space-y) var(--vdp-picture-space-x);
+  }
+
+  &-icon {
+    flex: auto;
+    position: relative; // 兼容 Chrome
+    width: 100%; // 兼容 Safari
+    max-height: var(--vdp-picture-icon-max-h);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    // :not(slot), ::slotted(*) 兼容 Web Components
+    & > *:not(slot),
+    ::slotted(*) {
+      position: absolute; // 兼容 Chrome
+      height: 100%;
+      display: block; // 大图标居中时需单独设置
+      // 兼容 1.0.2 之前版本
+      margin: var(--vdp-picture-icon-child-margin-y)
+        var(--vdp-picture-icon-child-margin-x);
+    }
+  }
+
+  &-text {
+    flex: none;
+    color: var(--vdp-text-color);
+    font-size: var(--vdp-picture-text-size);
+
+    &-icon {
+      margin-right: var(--vdp-picture-text-space);
+      min-height: var(--vdp-picture-text-icon-min-h);
+    }
+  }
+}
