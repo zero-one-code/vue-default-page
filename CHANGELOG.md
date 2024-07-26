@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.1.0](https://github.com/zero-one-code/vue-default-page/compare/v1.0.2...v1.1.0) (2024-07-26)
+
+
+### Features
+
+* add Web Components and Vue Components ([b1a8a30](https://github.com/zero-one-code/vue-default-page/commit/b1a8a307e9e103174f62b213a319b15487d675ca))
+* automatically import styles ([b00ad8c](https://github.com/zero-one-code/vue-default-page/commit/b00ad8cd83e8c5616ca0bc749fbe5e240817a4ba))
+
 ## [1.0.2](https://github.com/zero-one-code/vue-default-page/compare/v1.0.1...v1.0.2) (2024-06-01)
 
 
